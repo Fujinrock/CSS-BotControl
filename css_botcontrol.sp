@@ -3,7 +3,7 @@
 #define DEBUG
 
 #define PLUGIN_AUTHOR "Fujinrock"
-#define PLUGIN_VERSION "2.0"
+#define PLUGIN_VERSION "2.0.1"
 
 #include <sourcemod>
 #include <sdktools>
@@ -1146,9 +1146,16 @@ bool Client_CanSeePosition(int client, const float vecPos[3])
 	float vecClientPos[3];
 	GetClientEyePosition(client, vecClientPos);
 	
-	TR_TraceRay(vecClientPos, vecPos, MASK_VISIBLE_AND_NPCS, RayType_EndPoint);
+	TR_TraceRayFilter(vecClientPos, vecPos, MASK_VISIBLE_AND_NPCS, RayType_EndPoint, WorldOnlyFilter);
 	
 	return !TR_DidHit();
+}
+
+// =======================================================================================================================================================
+
+public bool WorldOnlyFilter(int entity, int contentsMask)
+{
+	return entity == 0;
 }
 
 // =======================================================================================================================================================
